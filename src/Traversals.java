@@ -140,8 +140,33 @@ public class Traversals {
    * @param node the node of the tree
    * @return true if there exists a strictly increasing root-to-leaf path, false otherwise
    */
+
   public static boolean hasStrictlyIncreasingPath(TreeNode<Integer> node) {
-    return false;
+    // if the first node is false, return false
+    if (node == null) return false;
+
+    // if the node is a leaf, return true (technically increasing)
+    if (node.left == null && node.right == null) return true;
+
+    // send both branches to the helper method with the current value
+    // only the left OR right branch needs to be true for there to be at least one 'strictly increasing path'
+    return hasStrictlyIncreasingPath(node.left, node.value) || hasStrictlyIncreasingPath(node.right, node.value);
+  }
+
+  public static boolean hasStrictlyIncreasingPath(TreeNode<Integer> node, int prev) {
+    
+    // if this node is null, then we haven't reached a leaf yet. ok to return false because of the earlier OR
+    // if the value isn't increasing over the previous, this is also a false branch
+    if (node == null || node.value <= prev) return false;
+
+    // if we've arrived here and it's a leaf node
+    // 1.) the values always went up
+    // 2.) we're not on a branch corner (null)
+    // so we must have found a 'correct' pathway
+    if (node.left == null && node.right == null) return true;
+
+    // otherwise continue checking left and right branches
+    return hasStrictlyIncreasingPath(node.left, node.value) || hasStrictlyIncreasingPath(node.right, node.value);
   }
 
   // OPTIONAL CHALLENGE
