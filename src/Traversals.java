@@ -226,6 +226,45 @@ public class Traversals {
    * @return a list of lists, where each inner list represents a root-to-leaf path in pre-order
    */
   public static <T> List<List<T>> findAllRootToLeafPaths(TreeNode<T> node) {
-    return null;
+    // make an empty list so we can return it if the node is null
+    List<List<T>> list = new ArrayList<>();
+    if (node == null) return list;
+
+    // make a list for the current path
+    List<T> path = new ArrayList<>();
+
+    // send those to the helper method
+    findAllRootToLeafPaths(node, list, path);
+
+    // after the helper method(s) finish, return the list reference
+    return list;
+  }
+
+  public static <T> void findAllRootToLeafPaths(TreeNode<T> node, List<List<T>> listList, List<T> path) {
+    // if helper is called with a null node somehow, prevent error by returning
+    if (node == null) return;
+
+    // (preorder) add the value of the current node to the path
+    path.add(node.value);
+
+    // If this is a leaf, we can add the path to the list of routes
+    // a leaf doesn't need more work done, return
+    if (node.left == null && node.right == null) {
+      listList.add(path);
+      return;
+    }
+    
+    // if we aren't on a leaf we have at least one more branch 
+    // make copies of the path where the left and right branch diverge
+    // and explore the paths
+    if (node.left != null) {
+      List<T> leftPath = new ArrayList<>(List.copyOf(path));
+      findAllRootToLeafPaths(node.left, listList, leftPath);
+    }
+
+    if (node.right != null) {
+      List<T> rightPath = new ArrayList<>(List.copyOf(path));
+      findAllRootToLeafPaths(node.right, listList, rightPath);
+    }
   }
 }
