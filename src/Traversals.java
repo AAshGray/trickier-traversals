@@ -100,7 +100,36 @@ public class Traversals {
    * @return the number of unique values in the tree, or 0 if the tree is null
    */
   public static int countDistinctValues(TreeNode<Integer> node) {
-    return 0;
+    // using a stack for practice
+    // we know it is always going to hold a TreeNode of Integers (parameter list)
+    Stack<TreeNode<Integer>> stack = new Stack<>();
+    
+    // saving a set (unique values by default)
+    // we know it is always going to be Integers
+    Set<Integer> set = new HashSet<>();
+
+    // setting up the stack
+    stack.push(node);
+
+    // while the stack isn't empty
+    while (!stack.empty()) {
+      // take a node off the stack
+      TreeNode<Integer> current = stack.pop(); 
+      
+      // check if it is null before we interact with the data
+      if (current != null) {
+        // add the value of the non-null node to our set
+        set.add(current.value);
+
+        // add left and right to our stack
+        stack.add(current.left);
+        stack.add(current.right);
+      }
+    }
+    
+    // at the end, return the size of our set of unique values
+    // an empty set (if first node == null) is size 0
+    return set.size();
   }
 
   /**
